@@ -30,6 +30,14 @@ public class JwtUtil {
                 .getSubject();
     }
 
+    public UUID extractUserId(String token) {
+        Object claim = Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId");
+        return claim != null ? UUID.fromString(claim.toString()) : null;
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
